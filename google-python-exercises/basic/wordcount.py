@@ -46,6 +46,38 @@ import sys
 # Then print_words() and print_top() can just call the utility function.
 
 ###
+def count_word(filename):
+  word_count={}
+  file = open(filename,'r')
+  text=file.read()
+  text=text.lower()
+  words=text.split()
+  for word in words:
+    if word in word_count.keys():
+      word_count[word] += 1
+    else:
+      word_count[word]=1
+  file.close()
+  return word_count
+
+def print_words(filename):
+  word_count = count_word(filename)
+  for word in sorted(word_count):
+    print word + " " + str(word_count[word])
+  print "Done Baby !"
+
+
+
+def print_top(filename):
+  word_count = count_word(filename)
+
+  def sort_by_count(word):
+    return word_count[word]
+  sorted_word_count = sorted(word_count,key=sort_by_count,reverse=True)
+  for word in sorted_word_count[:20]:
+    print word + " " + str(word_count[word])
+  print "Done Baby !"
+
 
 # This basic command line argument parsing code is provided and
 # calls the print_words() and print_top() functions which you must define.
