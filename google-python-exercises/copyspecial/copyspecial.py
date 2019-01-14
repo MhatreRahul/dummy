@@ -17,7 +17,38 @@ import commands
 
 # +++your code here+++
 # Write functions and modify main() to call them
+def copy_s2d(source,dest):
+  try:
+    src=os.path.abspath(source)
+  except:
+    sys.stderr.write('Problem finding source directory:' + source)
+  if not os.path.exists(dest):
+    sys.stderr.write('Destination directory does not exist, creating dir:'+dest)
+    os.mkdir(dest)
+  abs_dest=os.path.abspath(dest)
 
+  cmd = 'cp -r '+src+' ' +abs_dest
+  print 'Copying', src, 'to', abs_dest, 'Cmd :',cmd,'\n'
+
+  (status, output) = commands.getstatusoutput(cmd)
+  if status:
+    sys.stderr.write('Problem in copying dir')
+  else:
+    sys.stderr.write('Source copied to' + abs_dest)
+
+def zip_dir(source,zipfile):
+  try:
+    src=os.path.abspath(source)
+  except:
+    sys.stderr.write('Problem finding source directory:' + source)
+  cmd = 'tar -cvzf ' + zipfile +' '+ source
+  print "Zip command to run:", cmd
+  (status, output) = commands.getstatusoutput(cmd)
+
+  if status:
+    sys.stderr.write('Problem in zipping dir')
+  else:
+    sys.stderr.write('Zip file created at'+os.path.abspath(zipfile))
 
 
 def main():
@@ -50,6 +81,10 @@ def main():
 
   # +++your code here+++
   # Call your functions
+  if todir:
+    copy_s2d(args[0],todir)
+  if tozip:
+    zip_dir(args[0],tozip)
   
 if __name__ == "__main__":
   main()
